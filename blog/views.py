@@ -8,6 +8,9 @@ from .forms import CommentForm
 # Create your views here.
 
 class PostList(generic.ListView):
+    """ 
+    Render a list of posts
+    """
     queryset = Post.objects.filter(status = 1)
     template_name = "blog/index.html"
     paginate_by = 6
@@ -32,7 +35,6 @@ def post_detail(request, slug):
     comment_count = post.comments.filter(approved=True).count()
 
     if request.method == "POST":
-        print("Recived a POST request")
         comment_form = CommentForm(data=request.POST)
         if comment_form.is_valid():
             comment = comment_form.save(commit=False)
@@ -45,7 +47,6 @@ def post_detail(request, slug):
             )
 
     comment_form = CommentForm()
-    print("About to render template")
     return render(
         request,
         "blog/post_detail.html",
@@ -58,6 +59,9 @@ def post_detail(request, slug):
     )
 
 def comment_edit(request, slug, comment_id):
+    """ 
+    Renders an Edit comment functionality
+    """
     if request.method == "POST":
         queryset = Post.objects.filter(status=1)
         post = get_object_or_404(queryset, slug=slug)
@@ -81,6 +85,9 @@ def comment_edit(request, slug, comment_id):
     return HttpResponseRedirect(reverse("post_detail", args=[slug]))
 
 def comment_delete(request, slug, comment_id):
+        """ 
+    Renders an Delete comment functionality
+    """
     queryset = Post.objects.filter(status=1)
     post = get_object_or_404(queryset, slug=slug)
     comment = get_object_or_404(Comment, pk=comment_id)
