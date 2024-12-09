@@ -85,7 +85,7 @@ def comment_edit(request, slug, comment_id):
     return HttpResponseRedirect(reverse("post_detail", args=[slug]))
 
 def comment_delete(request, slug, comment_id):
-        """ 
+    """ 
     Renders an Delete comment functionality
     """
     queryset = Post.objects.filter(status=1)
